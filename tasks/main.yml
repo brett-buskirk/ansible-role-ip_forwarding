@@ -25,7 +25,13 @@
 
 # Configure iptables to perform Network Address Translation (NAT) for traffic from the VPC to the public IP.
 - name: Configure to translate traffic from VPC to public IP
-  shell: iptables -t nat -A POSTROUTING -s {{ vpc_network_prefix }} -o eth0 -j MASQUERADE
+  iptables:
+    table: nat
+    chain: POSTROUTING
+    source: "{{ vpc_network_prefix }}"
+    out_interface: eth0
+    jump: MASQUERADE
+    state: present
 
 # Save the iptables rules to persist the NAT configuration.
 - name: Persist NAT changes
