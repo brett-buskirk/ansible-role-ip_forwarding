@@ -1,0 +1,33 @@
+# ref: tasks/main.yml
+
+---
+# Install the 'iptables-persistent' package to save iptables rules across reboots.
+- name: Install iptables-persistent
+  apt:
+    name: iptables-persistent
+    state: present
+    update_cache: yes
+
+# Enable IP forwarding to allow the system to forward network traffic.
+- name: Enable IP Forwarding
+  sysctl:
+    name: net.ipv4.ip_forward
+    value: 1
+    state: present
+    reload: yes
+
+# Uncomment the 'net.ipv4.ip_forward' line in the sysctl.conf file to persist the change.
+- name: Uncomment net.ipv4.ip_forward in sysctl.conf
+  lineinfile:
+    path: /etc/sysctl.conf
+    regexp: '^#net\.ipv4\.ip_forward=1'
+    line: 'net.ipv4.ip_forward=1'
+
+# Configure iptables to perform Network Address Translation (NAT) for traffic from the VPC to the public IP.
+- name: Configure to translate traffic from VPC to public IP
+  shell: iptables -t nat -A POSTROUTING -s {{ vpc_network_prefix }} -o eth0 -j MASQUERADE
+
+# Save the iptables rules to persist the NAT configuration.
+- name: Persist NAT changes
+  shell: iptables-save > /etc/iptables/rules.v4
+  

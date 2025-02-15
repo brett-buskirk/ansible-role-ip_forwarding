@@ -1,0 +1,7 @@
+# ref: handlers/main.yml
+
+---
+# Reload the system iptables
+- name: Reload iptables
+  command: systemctl reload iptables
+  
