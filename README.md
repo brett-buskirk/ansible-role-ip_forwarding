@@ -21,3 +21,4 @@ This Ansible role enables IP forwarding and configures NAT using iptables.
     vpc_network_prefix: "10.0.0.0/24" #replace with your vpc network.
   roles:
     - ansible-role-ip_forwarding
+```
