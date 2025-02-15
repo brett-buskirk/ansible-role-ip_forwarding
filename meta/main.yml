@@ -1,0 +1,21 @@
+# ref: meta/main.yml
+
+---
+galaxy_info:
+  author: Brett Buskirk
+  description: Ansible role to enable IP forwarding and NAT using iptables.
+  company: RC Journey
+  license: MIT
+  min_ansible_version: "2.9"
+  platforms:
+    - name: Ubuntu
+      versions:
+        - "22.04"
+  galaxy_tags:
+    - networking
+    - iptables
+    - nat
+    - ip_forwarding
+
+dependencies: []
+
