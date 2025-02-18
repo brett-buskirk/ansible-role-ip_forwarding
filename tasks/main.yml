@@ -28,10 +28,11 @@
   iptables:
     table: nat
     chain: POSTROUTING
-    source: "{{ vpc_network_prefix }}"
+    source: "{{ item }}"
     out_interface: eth0
     jump: MASQUERADE
     state: present
+  with_items: "{{ vpc_network_prefixes }}"
 
 # Save the iptables rules to persist the NAT configuration.
 - name: Persist NAT changes
