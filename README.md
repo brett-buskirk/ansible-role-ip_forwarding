@@ -6,11 +6,12 @@ This Ansible role enables IP forwarding and configures NAT using iptables.
 
 * An Ubuntu-based system (tested on Ubuntu).
 * Ansible installed.
-* `vpc_network_prefix` variable defined with the VPC network address.
+* `vpc_network_prefixes` variable defined with one or more VPC network addresses.
 
 ## Role Variables
 
-* `vpc_network_prefix`: The network address of your VPC (e.g., "10.0.0.0/24").
+* `vpc_network_prefixes`: A list of VPC network addresses to NAT (e.g., `["10.0.0.0/24"]`). The role
+  configures a masquerade rule for each entry.
 
 ## Dependencies
 
@@ -22,7 +23,8 @@ This role has no dependencies.
 - hosts: your_hosts
   become: true
   vars:
-    vpc_network_prefix: "10.0.0.0/24" #replace with your vpc network.
+    vpc_network_prefixes:        # replace with your VPC network(s)
+      - "10.0.0.0/24"
   roles:
     - ansible-role-ip_forwarding
 ```
@@ -32,7 +34,7 @@ This role has no dependencies.
 You can install this role using Ansible Galaxy:
 
 ```shell
-ansible-galaxy install brett-buskirk.net_tools
+ansible-galaxy install brett-buskirk.ip_forwarding
 ```
 
 Or you can include it in your requirements.yml file:
@@ -58,7 +60,7 @@ This role performs the following tasks:
 - **Install `iptables-persistent`:** Installs the `iptables-persistent` package to save iptables rules across reboots.
 - **Enable IP Forwarding:** Enables IP forwarding by setting `net.ipv4.ip_forward` to 1 in `sysctl`.
 - **Persist IP Forwarding:** Uncomment the `net.ipv4.ip_forward` line in `/etc/sysctl.conf` to make the IP forwarding change permanent.
-- **Configure NAT (Network Address Translation):** Configures iptables to perform NAT for traffic originating from the specified VPC network (`vpc_network_prefix`) to the public interface (`eth0`).
+- **Configure NAT (Network Address Translation):** Configures iptables to perform NAT for traffic originating from the specified VPC networks (`vpc_network_prefixes`) to the public interface (`eth0`).
 - **Persist NAT Configuration:** Saves the iptables rules to `/etc/iptables/rules.v4` to ensure the NAT configuration persists across reboots.
 
 ## Usage
