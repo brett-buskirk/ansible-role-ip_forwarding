@@ -26,7 +26,7 @@ This role has no dependencies.
     vpc_network_prefixes:        # replace with your VPC network(s)
       - "10.0.0.0/24"
   roles:
-    - ansible-role-ip_forwarding
+    - brett-buskirk.ip_forwarding
 ```
 
 ## Installation
@@ -73,7 +73,7 @@ MIT
 
 ## Author Information
 
-This role was created by Brett Buskirk for RC Journey.
+This role was created by Brett Buskirk.
 
 ## Galaxy Tags
 
